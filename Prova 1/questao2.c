@@ -103,35 +103,71 @@ int pilhaVazia(Pilha *p)
     return p->top == NULL;
 }
 
-Fila *inverterFileCompilhas(Fila *f)
+void imprimirFila(Fila *f)
 {
-    Fila *filaOriginal = criarFila();
-    Fila *filaInvertida = criarFila();
-    Pilha *pilhaAux = criarPilha();
-
-    // Copiar a fila original para não modificá-la
     NodeFila *atual = f->front;
     while (atual != NULL)
     {
-        enfileirar(filaOriginal, atual->data);
+        printf("%d ", atual->data);
+        atual = atual->next;
+    }
+    printf("\n");
+}
+
+Fila *inverterFileComPilhas(Fila F)
+{
+    Fila *filaInvertida = criarFila();
+    Pilha *pilhaAux = criarPilha();
+
+    NodeFila *atual = F.front;
+    while (atual != NULL)
+    {
+        empilhar(pilhaAux, atual->data);
         atual = atual->next;
     }
 
-    // Transferir elementos da fila original para a pilha
-    while (!filaVazia(filaOriginal))
-    {
-        empilhar(pilhaAux, desenfileirar(filaOriginal));
-    }
-
-    // Transferir elementos da pilha para a fila invertida
     while (!pilhaVazia(pilhaAux))
     {
         enfileirar(filaInvertida, desempilhar(pilhaAux));
     }
 
-    // Liberar memória auxiliar
-    free(filaOriginal);
     free(pilhaAux);
-
     return filaInvertida;
+}
+
+int main()
+{
+    Fila *filaOriginal = criarFila();
+    enfileirar(filaOriginal, 1);
+    enfileirar(filaOriginal, 2);
+    enfileirar(filaOriginal, 3);
+    enfileirar(filaOriginal, 4);
+
+    printf("Fila Original: ");
+    imprimirFila(filaOriginal);
+
+    Fila *filaInvertida = inverterFileComPilhas(*filaOriginal);
+    printf("Fila Invertida: ");
+    imprimirFila(filaInvertida);
+
+    // Liberar memória
+    NodeFila *atual = filaInvertida->front;
+    while (atual != NULL)
+    {
+        NodeFila *temp = atual;
+        atual = atual->next;
+        free(temp);
+    }
+    free(filaInvertida);
+
+    atual = filaOriginal->front;
+    while (atual != NULL)
+    {
+        NodeFila *temp = atual;
+        atual = atual->next;
+        free(temp);
+    }
+    free(filaOriginal);
+
+    return 0;
 }

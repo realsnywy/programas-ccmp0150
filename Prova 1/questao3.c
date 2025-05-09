@@ -20,7 +20,7 @@ LinkedList *criarLista()
     return lista;
 }
 
-void insertFinal(LinkedList *lista, int valor)
+void insertrFinal(LinkedList *lista, int valor)
 {
     Node *newNode = (Node *)malloc(sizeof(Node));
     newNode->data = valor;
@@ -59,7 +59,7 @@ Stack *criarPilha()
     return pilha;
 }
 
-void empilharStack(Stack *pilha, int valor)
+void empilhar(Stack *pilha, int valor)
 {
     StackNode *newNode = (StackNode *)malloc(sizeof(StackNode));
     newNode->data = valor;
@@ -67,7 +67,7 @@ void empilharStack(Stack *pilha, int valor)
     pilha->top = newNode;
 }
 
-int desempilharStack(Stack *pilha)
+int desempilhar(Stack *pilha)
 {
     if (pilha->top == NULL)
         return -1;
@@ -92,35 +92,28 @@ bool ehPalindromoLista(LinkedList *lista)
     }
 
     Stack *pilha = criarPilha();
-    Node *slow = lista->head;
-    Node *fast = lista->head;
+    Node *atual = lista->head;
 
-    // Empilhar a primeira metade dos elementos
-    while (fast != NULL && fast->next != NULL)
+    // Empilhar todos os elementos
+    while (atual != NULL)
     {
-        empilharStack(pilha, slow->data);
-        slow = slow->next;
-        fast = fast->next->next;
+        empilhar(pilha, atual->data);
+        atual = atual->next;
     }
 
-    // Se o número de elementos for ímpar, pular o elemento do meio
-    if (fast != NULL)
+    // Comparar com a lista
+    atual = lista->head;
+    while (atual != NULL)
     {
-        slow = slow->next;
-    }
-
-    // Comparar a segunda metade com os elementos desempilhados
-    while (slow != NULL)
-    {
-        if (desempilharStack(pilha) != slow->data)
+        if (atual->data != desempilhar(pilha))
         {
-            free(pilha);
+            liberarPilha(pilha);
             return false;
         }
-        slow = slow->next;
+        atual = atual->next;
     }
 
-    free(pilha);
+    liberarPilha(pilha);
     return true;
 }
 
@@ -140,7 +133,48 @@ void liberarPilha(Stack *pilha)
 {
     while (!pilhaVazia(pilha))
     {
-        desempilharStack(pilha);
+        desempilhar(pilha);
     }
     free(pilha);
+}
+
+int main()
+{
+    // Teste 1: Palindrome
+    LinkedList *lista1 = criarLista();
+    insertrFinal(lista1, 1);
+    insertrFinal(lista1, 2);
+    insertrFinal(lista1, 2);
+    insertrFinal(lista1, 1);
+    printf("Lista 1 eh palindrome? %s\n", ehPalindromoLista(lista1) ? "Sim" : "Nao");
+    liberarLista(lista1);
+
+    // Teste 2: Não palindrome
+    LinkedList *lista2 = criarLista();
+    insertrFinal(lista2, 1);
+    insertrFinal(lista2, 2);
+    insertrFinal(lista2, 3);
+    printf("Lista 2 eh palindrome? %s\n", ehPalindromoLista(lista2) ? "Sim" : "Nao");
+    liberarLista(lista2);
+
+    // Teste 3: Palindrome com comprimento impar
+    LinkedList *lista3 = criarLista();
+    insertrFinal(lista3, 1);
+    insertrFinal(lista3, 2);
+    insertrFinal(lista3, 1);
+    printf("Lista 3 eh palindrome? %s\n", ehPalindromoLista(lista3) ? "Sim" : "Nao");
+    liberarLista(lista3);
+
+    // Teste 4: Lista vazia
+    LinkedList *lista4 = criarLista();
+    printf("Lista 4 eh palindrome? %s\n", ehPalindromoLista(lista4) ? "Sim" : "Nao");
+    liberarLista(lista4);
+
+    // Teste 5: Lista com um elemento
+    LinkedList *lista5 = criarLista();
+    insertrFinal(lista5, 5);
+    printf("Lista 5 eh palindrome? %s\n", ehPalindromoLista(lista5) ? "Sim" : "Nao");
+    liberarLista(lista5);
+
+    return 0;
 }
