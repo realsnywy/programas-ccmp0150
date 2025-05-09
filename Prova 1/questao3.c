@@ -84,6 +84,15 @@ bool pilhaVazia(Stack *pilha)
     return pilha->top == NULL;
 }
 
+void liberarPilha(Stack *pilha)
+{
+    while (!pilhaVazia(pilha))
+    {
+        desempilhar(pilha);
+    }
+    free(pilha);
+}
+
 bool ehPalindromoLista(LinkedList *lista)
 {
     if (lista->head == NULL || lista->head->next == NULL)
@@ -127,15 +136,6 @@ void liberarLista(LinkedList *lista)
         free(temp);
     }
     free(lista);
-}
-
-void liberarPilha(Stack *pilha)
-{
-    while (!pilhaVazia(pilha))
-    {
-        desempilhar(pilha);
-    }
-    free(pilha);
 }
 
 int main()
