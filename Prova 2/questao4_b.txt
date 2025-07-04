@@ -1,0 +1,54 @@
+0. Estado inicial
+- array = {10, 7, 8, 9, 1, 5}
+- Pilha: [] (vazia)
+
+1. Empilhar intervalo inicial
+- O intervalo (0, 5) é empilhado.
+- Pilha: [0, 5]
+
+2. Desempilhar (0, 5) e particionar
+- low = 0, high = 5. O pivô é array[5] = 5.
+- Partition reorganiza o array.
+- Array: {1, 5, 8, 9, 10, 7}
+- O pivô 5 agora está no índice `p = 1`.
+- Pilha: []
+
+3. Empilhar sub-array da direita
+- Sub-array esquerdo (0, 0) é trivial e não é empilhado.
+- Sub-array direito (2, 5) é válido e é empilhado.
+- Pilha: [2, 5]
+
+4. Desempilhar (2, 5) e particionar
+- low = 2, high = 5. O pivô é array[5] = 7.
+- Partition é chamada para o sub-array {8, 9, 10, 7}.
+- Array: {1, 5, 7, 9, 10, 8}
+- O pivô 7 agora está no índice p = 2.
+- Pilha: []
+
+5. Empilhar sub-array da direita
+- Sub-array esquerdo (2, 1) é inválido.
+- Sub-array direito (3, 5) é válido e é empilhado.
+- Pilha: [3, 5]
+
+6. Desempilhar (3, 5) e particionar
+- low = 3, high = 5. O pivô é array[5] = 8.
+- Partition é chamada para {9, 10, 8}.
+- Array: {1, 5, 7, 8, 10, 9}
+- O pivô 8 agora está no índice p = 3.
+- Pilha: []
+
+7. Empilhar sub-array da direita
+- Sub-array esquerdo (3, 2) é inválido.
+- Sub-array direito (4, 5) é válido e é empilhado.
+- Pilha: [4, 5]
+
+8. Desempilhar (4, 5) e particionar
+- low = 4, high = 5. O pivô é array[5] = 9.
+- Partition é chamada para {10, 9}.
+- Array: {1, 5, 7, 8, 9, 10}
+- O pivô 9 agora está no índice p = 4.
+- Pilha: []
+
+9. Fim da execução
+- Não há novos sub-arrays para empilhar. A pilha permanece vazia e o loop termina.
+- Array Final Ordenado: {1, 5, 7, 8, 9, 10}
